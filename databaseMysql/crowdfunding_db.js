@@ -1,7 +1,7 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const connection = mysql.createConnection({
     host     : 'localhost',
-    user     : 'root',  
+    user     : 'root',
     password : 'Guziqian030121',
     database : 'crowdfunding_db'
 });
