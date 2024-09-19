@@ -4,12 +4,12 @@ var bodyParser = require('body-parser');
 var http = require('http');
 
 module.exports = {
-	getconnection: ()=>{
-	return mysql.createConnection({
-		host:dbDetails.host,
-		user:dbDetails.user,
-		password:dbDetails.password,
-		database:dbDetails.database
-	});
-}
+    getconnection: ()=>{
+        return mysql.createConnection({
+            host:dbDetails.host,
+            user:dbDetails.user,
+            password:dbDetails.password,
+            database:dbDetails.database
+        });
+    }
 }
