@@ -1,11 +1,15 @@
-const mysql = require('mysql');
+var dbDetails = require("./db-details");
+var mysql = require('mysql2');
+var bodyParser = require('body-parser');
+var http = require('http');
 
-const pool = mysql.createPool({
-    connectionLimit: 10,
-    host: 'localhost',
-    user: 'root',
-    password: 'yourpassword',
-    database: 'crowdfunding_db'
-});
-
-module.exports = pool;
+module.exports = {
+	getconnection: ()=>{
+	return mysql.createConnection({
+		host:dbDetails.host,
+		user:dbDetails.user,
+		password:dbDetails.password,
+		database:dbDetails.database
+	});
+}
+}
