@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('http://localhost:3000/api/fundraisers')
+    fetch('http://localhost:1000/api/fundraisers')
         .then(response => response.json())
         .then(data => displayFundraisers(data))
         .catch(error => console.error('Error fetching data:', error));
@@ -32,7 +32,7 @@ function fetchFundraisers() {
         return;
     }
 
-    fetch(`http://localhost:3000/api/fundraisers?organizer=${organizer}&city=${city}&category=${category}`)
+    fetch(`http://localhost:1000/api/fundraisers?organizer=${organizer}&city=${city}&category=${category}`)
         .then(response => response.json())
         .then(data => {
             if (data.length === 0) {

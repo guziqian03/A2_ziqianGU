@@ -28,7 +28,7 @@
         document.getElementById('fundraiserDetails').innerHTML = '<p class="error">Fundraiser not found。</p>';
     } else {
 
-        fetch(`http://localhost:3000/api/fundraiser/${fundraiserId}`)
+        fetch(`http://localhost:1000/api/fundraiser/${fundraiserId}`)
             .then(response => response.json())
             .then(fundraiser => {
                 const detailsDiv = document.getElementById('fundraiserDetails');

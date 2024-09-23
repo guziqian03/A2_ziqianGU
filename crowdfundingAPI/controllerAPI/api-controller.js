@@ -8,7 +8,7 @@ connection.connect();
 
 var router = express.Router();
 
-// Retrieve all active fundraisers including the category
+
 router.get("/fundraisers", (req, res) => {
     connection.query("SELECT f.*, c.NAME AS category_name FROM Fundraiser f JOIN Category c ON f.category_id = c.CATEGORY_ID WHERE f.active = 1", (err, results) => {
         if (err) {
@@ -21,7 +21,7 @@ router.get("/fundraisers", (req, res) => {
 });
 
 
-// Retrieve all categories from the database
+
 router.get("/categories", (req, res) => {
     connection.query("SELECT * FROM Category", (err, results) => {
         if (err) {
@@ -33,7 +33,7 @@ router.get("/categories", (req, res) => {
     });
 });
 
-// Retrieve fundraiser details by ID
+
 router.get("/fundraiser/:id", (req, res) => {
     const { id } = req.params;
     connection.query("SELECT f.*, c.NAME AS category_name FROM Fundraiser f JOIN Category c ON f.category_id = c.CATEGORY_ID where f.active=1 and  f.FUNDRAISER_ID = ?", [id], (err, results) => {

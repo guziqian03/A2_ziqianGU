@@ -1,1 +1,0 @@
-SELECT * FROM crowdfunding_db.fundraiser;

@@ -25,11 +25,10 @@
 <script>
 
     document.addEventListener('DOMContentLoaded', function() {
-        // 获取 fundraisers section 的 DOM 元素
         const fundraisersSection = document.getElementById('fundraisers');
 
 
-        fetch('http://localhost:3000/api/fundraisers')
+        fetch('http://localhost:1000/api/fundraisers')
             .then(response => response.json())
             .then(data => {
                 data.forEach(fundraiser => {
