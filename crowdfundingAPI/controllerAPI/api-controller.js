@@ -36,7 +36,7 @@ router.get("/categories", (req, res) => {
 // Retrieve fundraiser details by ID
 router.get("/fundraiser/:id", (req, res) => {
     const { id } = req.params;
-    connection.query("SELECT * FROM Fundraiser WHERE id = ?", [id], (err, results) => {
+    connection.query("SELECT f.*, c.NAME AS category_name FROM Fundraiser f JOIN Category c ON f.category_id = c.CATEGORY_ID where f.active=1 and  f.FUNDRAISER_ID = ?", [id], (err, results) => {
         if (err) {
             console.error("Error retrieving fundraiser", err);
             res.status(500).send("Error while retrieving fundraiser");
