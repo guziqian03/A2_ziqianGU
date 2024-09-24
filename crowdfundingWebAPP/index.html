@@ -4,39 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Non-Profit Organization</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f4f8;
+            color: #333;
+        }
+        header {
+            background: #005f73;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .header-content h1 {
+            margin: 0;
+        }
+        section {
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .fundraiser {
+            background: #ffffff;
+            border: 1px solid #cccccc;
+            margin: 10px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #023047;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-
 <header>
-    <h1>Welcome to Assessment2</h1>
-    <p>Here is the content...</p>
+    <nav>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="/search.html">Search</a></li>
+        </ul>
+    </nav>
+    <div class="header-content">
+        <h1>Welcome to Assessment 2</h1>
+
+    </div>
 </header>
-
-<section id="fundraisers">
-
-</section>
-
+<section id="fundraisers"></section>
 <footer>
-    <p>© 2003 ZiqianGU </p>
+    <p>© 2003 Ziqian GU </p>
 </footer>
 
-
 <script>
-
     document.addEventListener('DOMContentLoaded', function() {
         const fundraisersSection = document.getElementById('fundraisers');
-
-
         fetch('http://localhost:1000/api/fundraisers')
             .then(response => response.json())
             .then(data => {
                 data.forEach(fundraiser => {
                     if (fundraiser.ACTIVE === 1) {
                         const fundraiserElement = document.createElement('div');
-                        fundraiserElement.classList.add('fundraiser');  // 为 div 添加 class
-
-                        fundraiserElement.innerHTML = `
+                        fundraiserElement.classList.add('fundraiser');
+                        const contentElement = document.createElement('div');
+                        contentElement.innerHTML = `
                             <h2>${fundraiser.CAPTION}</h2>
                             <p><strong>Organizer:</strong> ${fundraiser.ORGANIZER}</p>
                             <p><strong>Category:</strong> ${fundraiser.category_name}</p>
@@ -44,7 +97,11 @@
                             <p><strong>Current Funding:</strong> $${fundraiser.CURRENT_FUNDING}</p>
                             <p><strong>City:</strong> ${fundraiser.CITY}</p>
                         `;
-
+                        const imageElement = document.createElement('div');
+                        imageElement.classList.add('image');
+                        imageElement.style.backgroundImage = `url(./image/${fundraiser.FUNDRAISER_ID}.jpg)`;
+                        fundraiserElement.appendChild(contentElement);
+                        fundraiserElement.appendChild(imageElement);
                         fundraisersSection.appendChild(fundraiserElement);
                     }
                 });
@@ -54,7 +111,5 @@
             });
     });
 </script>
-
 </body>
 </html>
-
