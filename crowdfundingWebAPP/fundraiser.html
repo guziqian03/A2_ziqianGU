@@ -5,50 +5,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fundraiser Details</title>
     <style>
+        /* Global styles */
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #fee4cb;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #3e2723;
+        }
+
+        /* Styling the container */
+        .container {
+            width: 80%;
+            max-width: 800px;
+            background-color: #fafafa;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            display: block;
+        }
+
+        /* Navigation styles */
+        nav {
+            background-color: #3e2723;
+            padding: 10px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            background-color: #6a4f4b;
+            border-radius: 10px;
+        }
+
+        /* Content styling */
+        .content {
+            text-align: center;
+            padding: 10px;
+        }
+
         .error {
-            color: red;
-            font-weight: bold;
+            color: #ff6f61;
+            font-size: 20px;
+        }
+
+        .fundraiser-info h2 {
+            color: #6d4c41;
+            font-size: 24px;
+        }
+
+        /* Button styling */
+        button {
+            padding: 8px 16px;
+            background-color: #ffab91;
+            color: #5d4037;
+            border: 2px solid #3e2723;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #ffccbc;
+        }
+
+        /* Image section styling */
+        .image-section {
+            margin-top: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .image-section img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
     </style>
 </head>
 <body>
-<h1>Fundraiser Details</h1>
-
-
-<div id="fundraiserDetails"></div>
-
-
-<button id="donateButton">Donate</button>
+<div class="container">
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="search.html">Back to Search</a>
+    </nav>
+    <div class="content">
+        <div id="fundraiserDetails" class="fundraiser-info"></div>
+        <button id="donateButton">Donate</button>
+    </div>
+    <div class="image-section" id="image-section"></div>
+</div>
 
 <script>
-    const params = new URLSearchParams(window.location.search);
-    const fundraiserId = params.get('fundraiserId');
+    document.addEventListener('DOMContentLoaded', function () {
+        const params = new URLSearchParams(window.location.search);
+        const fundraiserId = params.get('fundraiserId');
 
-    if (!fundraiserId) {
-        document.getElementById('fundraiserDetails').innerHTML = '<p class="error">Fundraiser not found。</p>';
-    } else {
+        if (!fundraiserId) {
+            document.getElementById('fundraiserDetails').innerHTML = '<p class="error">Fundraiser not found.</p>';
+        } else {
+            fetch(`http://localhost:1000/api/fundraiser/${fundraiserId}`)
+                .then(response => response.json())
+                .then(fundraiser => {
+                    const detailsDiv = document.getElementById('fundraiserDetails');
+                    detailsDiv.innerHTML = `
+                        <h2>${fundraiser.CAPTION}</h2>
+                        <p><strong>Organizer:</strong> ${fundraiser.ORGANIZER}</p>
+                        <p><strong>Category:</strong> ${fundraiser.category_name}</p>
+                        <p><strong>Target Funding:</strong> $${fundraiser.TARGET_FUNDING}</p>
+                        <p><strong>Current Funding:</strong> $${fundraiser.CURRENT_FUNDING}</p>
+                        <p><strong>City:</strong> ${fundraiser.CITY}</p>
+                    `;
+                    document.getElementById('image-section').innerHTML = `<img src="./image/${fundraiser.FUNDRAISER_ID}.jpg" alt="Fundraiser Image">`;
+                })
+                .catch(error => {
+                    console.error('Error fetching fundraiser details:', error);
+                    document.getElementById('fundraiserDetails').innerHTML = '<p class="error">Error loading fundraiser details.</p>';
+                });
+        }
 
-        fetch(`http://localhost:1000/api/fundraiser/${fundraiserId}`)
-            .then(response => response.json())
-            .then(fundraiser => {
-                const detailsDiv = document.getElementById('fundraiserDetails');
-                detailsDiv.innerHTML = `
-                    <h2>${fundraiser.CAPTION}</h2>
-                    <p><strong>Organizer:</strong> ${fundraiser.ORGANIZER}</p>
-                    <p><strong>Category:</strong> ${fundraiser.category_name}</p>
-                    <p><strong>Target Funding:</strong> $${fundraiser.TARGET_FUNDING}</p>
-                    <p><strong>Current Funding:</strong> $${fundraiser.CURRENT_FUNDING}</p>
-                    <p><strong>City:</strong> ${fundraiser.CITY}</p>
-                `;
-            })
-            .catch(error => {
-                console.error('Error fetching fundraiser details:', error);
-                document.getElementById('fundraiserDetails').innerHTML = '<p class="error">Fundraiser not found.</p>';
-            });
-    }
-
-    document.getElementById('donateButton').addEventListener('click', () => {
-        alert('This feature is under construction');
+        document.getElementById('donateButton').addEventListener('click', function () {
+            alert('This feature is under construction');
+        });
     });
 </script>
 

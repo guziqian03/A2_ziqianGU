@@ -5,55 +5,126 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Fundraisers</title>
     <style>
-
-        .error {
-            color: red;
-            font-weight: bold;
+        /* Global styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e8efff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .fundraiser {
+
+        /* Styling the container */
+        .container {
+            width: 80%;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Styling the form */
+        form div {
             margin-bottom: 20px;
         }
+
+        input[type="text"], button {
+            width: calc(100% - 40px);
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #bbbbbb;
+        }
+
+        button {
+            background-color: #4a67d6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #3548a8;
+        }
+
+        /* Styling for error messages */
+        .error {
+            color: #ff0000;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        /* Styling fundraiser items */
+        .fundraiser {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .fundraiser:hover {
+            transform: scale(1.05);
+        }
+
+        .fundraiser h2 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .fundraiser p {
+            color: #666;
+            font-size: 16px;
+        }
+
         .fundraiser a {
-            color: blue;
+            color: #4a67d6;
+            text-decoration: none;
+        }
+
+        .fundraiser a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
-<h1>Search Fundraisers</h1>
-<form id="searchForm">
-    <div>
-        <label for="organizer">Organizer:</label>
-        <input type="text" id="organizer" name="organizer">
-    </div>
-    <div>
-        <label for="city">City:</label>
-        <input type="text" id="city" name="city">
-    </div>
-    <div>
-        <label for="category">Category:</label>
-        <input type="text" id="category" name="category">
-    </div>
-    <button type="button" onclick="fetchFundraisers()">Search</button>
-    <button type="button" onclick="clearCheckboxes()">Clear</button>
-</form>
-
-<div id="error" class="error"></div>
-
-<div id="results"></div>
+<div class="container">
+    <h1>Search Fundraisers</h1>
+    <form id="searchForm">
+        <div>
+            <label for="organizer">Organizer:</label>
+            <input type="text" id="organizer" name="organizer">
+        </div>
+        <div>
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city">
+        </div>
+        <div>
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="category">
+        </div>
+        <button type="button" onclick="fetchFundraisers()">Search</button>
+        <button type="button" onclick="clearCheckboxes()">Clear</button>
+    </form>
+    <div id="error" class="error"></div>
+    <div id="results"></div>
+</div>
 
 <script>
-
     function clearCheckboxes() {
         document.getElementById('organizer').value = '';
         document.getElementById('city').value = '';
         document.getElementById('category').value = '';
-        document.getElementById('error').textContent = '';
-        document.getElementById('results').innerHTML = '';
+        document.getElementById('error').textContent = '';  // 清空错误信息
+        document.getElementById('results').innerHTML = '';  // 清空结果显示区域
     }
 
-
     function fetchFundraisers() {
+
         const organizer = document.getElementById('organizer').value.trim();
         const city = document.getElementById('city').value.trim();
         const category = document.getElementById('category').value.trim();
@@ -80,6 +151,7 @@
                         fundraiser.ACTIVE === 1;
                 });
 
+
                 if (filteredData.length === 0) {
                     document.getElementById('error').textContent = 'No fundraisers found matching the criteria.';
                 } else {
@@ -94,24 +166,40 @@
 
     function displayResults(fundraisers) {
         const resultsDiv = document.getElementById('results');
-        resultsDiv.innerHTML = '';
+        resultsDiv.innerHTML = '';  // 先清空之前的内容
+
 
         fundraisers.forEach(fundraiser => {
             const fundraiserElement = document.createElement('div');
             fundraiserElement.classList.add('fundraiser');
 
+            let imageUrl = '';
+            if (fundraiser.FUNDRAISER_ID === 1) {
+                imageUrl = './image/1.jpg';
+            } else if (fundraiser.FUNDRAISER_ID === 2) {
+                imageUrl = './image/2.jpg';
+            } else if (fundraiser.FUNDRAISER_ID === 3) {
+                imageUrl = './image/3.jpg';
+            } else if (fundraiser.FUNDRAISER_ID === 4) {
+                imageUrl = './image/4.jpg';
+            } else if (fundraiser.FUNDRAISER_ID === 5) {
+                imageUrl = './image/5.jpg';
+            }
+
             fundraiserElement.innerHTML = `
+			<div class="fundraiser-info">
                 <h2><a href="/fundraiser.html?fundraiserId=${fundraiser.FUNDRAISER_ID}">${fundraiser.CAPTION}</a></h2>
                 <p><strong>Organizer:</strong> ${fundraiser.ORGANIZER}</p>
                 <p><strong>Category:</strong> ${fundraiser.category_name}</p>
                 <p><strong>Target Funding:</strong> $${fundraiser.TARGET_FUNDING}</p>
                 <p><strong>Current Funding:</strong> $${fundraiser.CURRENT_FUNDING}</p>
                 <p><strong>City:</strong> ${fundraiser.CITY}</p>
+			</div>
+			 <img src="${imageUrl}" alt="Fundraiser Image">
             `;
             resultsDiv.appendChild(fundraiserElement);
         });
     }
 </script>
-
 </body>
 </html>
